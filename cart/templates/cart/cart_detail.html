@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load cart_extras %}
+
+{% block title %}Carrito de Compras{% endblock %}
+
+{% block content %}
+<h2>Carrito de Compras</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Vehículo</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Total</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart.items.all %}
+        <tr>
+            <td>{{ item.vehicle.brand }} {{ item.vehicle.model }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.vehicle.price }}</td>
+            <td>{{ item.quantity|mul:item.vehicle.price }}</td>
+            <td>
+                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if cart.items.all %}
+<a href="{% url 'finalize_purchase' %}" class="btn btn-success">Finalizar Compra</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Ventas{% endblock %}
+
+{% block content %}
+<h1>Lista de Ventas</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Vehículo</th>
+            <th>Empleado</th>
+            <th>Cliente</th>
+            <th>Precio</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="sale-list">
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            url: '/sales/',
+            method: 'GET',
+            success: function(data){
+                var saleList = $('#sale-list');
+                data.sales.forEach(function(sale){
+                    saleList.append(
+                        '<tr>' +
+                        '<td>' + sale.vehicle + '</td>' +
+                        '<td>' + sale.employee + '</td>' +
+                        '<td>' + sale.customer_name + '</td>' +
+                        '<td>' + sale.price + '</td>' +
+                        '<td>' + sale.date + '</td>' +
+                        '<td>' +
+                        '<button class="btn btn-primary" onclick="editSale(' + sale.id + ')">Editar</button> ' +
+                        '<button class="btn btn-danger" onclick="deleteSale(' + sale.id + ')">Eliminar</button>' +
+                        '</td>' +
+                        '</tr>'
+                    );
+                });
+            }
+        });
+    });
+
+    function editSale(id) {
+        // Implementar lógica para editar la venta
+    }
+
+    function deleteSale(id) {
+        $.ajax({
+            url: '/sales/' + id + '/',
+            method: 'DELETE',
+            success: function(response) {
+                alert(response.message);
+                location.reload(); // Recargar la página para actualizar la lista
+            }
+        });
+    }
+</script>
+{% endblock %}

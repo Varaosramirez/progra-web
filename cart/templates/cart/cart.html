@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cart_extras %}
+
+{% block title %}Carrito{% endblock %}
+
+{% block content %}
+<h2>Tu Carrito</h2>
+{% if items %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Vehículo</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.vehicle.model }}</td>
+            <td>{{ item.vehicle.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.vehicle.price|mul:item.quantity }}</td>
+            <td>
+                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h3>Total: {{ total }}</h3>
+<a href="{% url 'finalize_purchase' %}" class="btn btn-success">Finalizar compra</a>
+{% else %}
+<p>No hay artículos en el carrito.</p>
+{% endif %}
+{% endblock %}

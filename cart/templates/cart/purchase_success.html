@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Compra Exitosa{% endblock %}
+
+{% block content %}
+<h2>Compra Exitosa</h2>
+<p>¡Gracias por tu compra! Tu pedido ha sido procesado exitosamente.</p>
+<a href="{% url 'vehicle_list' %}" class="btn btn-primary">Volver a la lista de vehículos</a>
+{% endblock %}

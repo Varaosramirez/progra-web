@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Finalizar Compra{% endblock %}
+
+{% block content %}
+<h2>Finalizar Compra</h2>
+<p>¿Estás seguro de que deseas finalizar la compra?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Sí, finalizar compra</button>
+    <a href="{% url 'cart_detail' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Formulario de Venta{% endblock %}
+
+{% block content %}
+<h1>Formulario de Venta</h1>
+<form id="sale-form">
+    <input type="hidden" id="sale-id" name="id">
+    <div class="form-group">
+        <label>Vehículo:</label>
+        <input type="text" class="form-control" id="vehicle_id" name="vehicle_id">
+    </div>
+    <div class="form-group">
+        <label>Empleado:</label>
+        <input type="text" class="form-control" id="employee_id" name="employee_id">
+    </div>
+    <div class="form-group">
+        <label>Cliente:</label>
+        <input type="text" class="form-control" id="customer_name" name="customer_name">
+    </div>
+    <div class="form-group">
+        <label>Precio:</label>
+        <input type="text" class="form-control" id="price" name="price">
+    </div>
+    <div class="form-group">
+        <label>Fecha:</label>
+        <input type="date" class="form-control" id="date" name="date">
+    </div>
+    <button type="button" class="btn btn-success" onclick="submitForm()">Guardar</button>
+</form>
+
+<script>
+    function submitForm() {
+        var id = $('#sale-id').val();
+        var method = id ? 'POST' : 'PUT';
+        var url = id ? '/sales/' + id + '/' : '/sales/create/';
+        $.ajax({
+            url: url,
+            method: method,
+            data: {
+                vehicle_id: $('#vehicle_id').val(),
+                employee_id: $('#employee_id').val(),
+                customer_name: $('#customer_name').val(),
+                price: $('#price').val(),
+                date: $('#date').val()
+            },
+            success: function(response) {
+                alert(response.message);
+                window.location.href = '/sales/';
+            }
+        });
+    }
+
+    function loadSale(id) {
+        $.ajax({
+            url: '/sales/' + id + '/',
+            method: 'GET',
+            success: function(data) {
+                var sale = data.sale;
+                $('#sale-id').val(sale.id);
+                $('#vehicle_id').val(sale.vehicle_id);
+                $('#employee_id').val(sale.employee_id);
+                $('#customer_name').val(sale.customer_name);
+                $('#price').val(sale.price);
+                $('#date').val(sale.date);
+            }
+        });
+    }
+</script>
+{% endblock %}

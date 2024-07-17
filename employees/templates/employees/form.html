@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Formulario de Empleado{% endblock %}
+
+{% block content %}
+<h1>Formulario de Empleado</h1>
+<form id="employee-form">
+    <input type="hidden" id="employee-id" name="id">
+    <div class="form-group">
+        <label>Nombre:</label>
+        <input type="text" class="form-control" id="first_name" name="first_name">
+    </div>
+    <div class="form-group">
+        <label>Apellido:</label>
+        <input type="text" class="form-control" id="last_name" name="last_name">
+    </div>
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" class="form-control" id="email" name="email">
+    </div>
+    <div class="form-group">
+        <label>Posición:</label>
+        <input type="text" class="form-control" id="position" name="position">
+    </div>
+    <button type="button" class="btn btn-success" onclick="submitForm()">Guardar</button>
+</form>
+
+<script>
+    function submitForm() {
+        var id = $('#employee-id').val();
+        var method = id ? 'POST' : 'PUT';
+        var url = id ? '/employees/' + id + '/' : '/employees/create/';
+        $.ajax({
+            url: url,
+            method: method,
+            data: {
+                first_name: $('#first_name').val(),
+                last_name: $('#last_name').val(),
+                email: $('#email').val(),
+                position: $('#position').val()
+            },
+            success: function(response) {
+                alert(response.message);
+                window.location.href = '/employees/';
+            }
+        });
+    }
+
+    function loadEmployee(id) {
+        $.ajax({
+            url: '/employees/' + id + '/',
+            method: 'GET',
+            success: function(data) {
+                var employee = data.employee;
+                $('#employee-id').val(employee.id);
+                $('#first_name').val(employee.first_name);
+                $('#last_name').val(employee.last_name);
+                $('#email').val(employee.email);
+                $('#position').val(employee.position);
+            }
+        });
+    }
+</script>
+{% endblock %}

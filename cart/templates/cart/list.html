@@ -1,0 +1,52 @@
+<!-- templates/cart/list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Carrito de Compras</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Carrito de Compras</h1>
+    <table id="cart-list">
+        <tr>
+            <th>Vehículo</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </table>
+
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: '/cart/',
+                method: 'GET',
+                success: function(data){
+                    var cartList = $('#cart-list');
+                    data.items.forEach(function(item){
+                        cartList.append(
+                            '<tr>' +
+                            '<td>' + item.vehicle.brand + ' ' + item.vehicle.model + '</td>' +
+                            '<td>' + item.quantity + '</td>' +
+                            '<td>' +
+                            '<button onclick="removeFromCart(' + item.id + ')">Eliminar</button>' +
+                            '</td>' +
+                            '</tr>'
+                        );
+                    });
+                }
+            });
+        });
+
+        function removeFromCart(id) {
+            $.ajax({
+                url: '/cart/remove/' + id + '/',
+                method: 'DELETE',
+                success: function(response) {
+                    alert(response.message);
+                    location.reload(); // Recargar la página para actualizar la lista
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Empleados{% endblock %}
+
+{% block content %}
+<h1>Lista de Empleados</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Posición</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="employee-list">
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            url: '/employees/',
+            method: 'GET',
+            success: function(data){
+                var employeeList = $('#employee-list');
+                data.employees.forEach(function(employee){
+                    employeeList.append(
+                        '<tr>' +
+                        '<td>' + employee.first_name + '</td>' +
+                        '<td>' + employee.last_name + '</td>' +
+                        '<td>' + employee.email + '</td>' +
+                        '<td>' + employee.position + '</td>' +
+                        '<td>' +
+                        '<button class="btn btn-primary" onclick="editEmployee(' + employee.id + ')">Editar</button> ' +
+                        '<button class="btn btn-danger" onclick="deleteEmployee(' + employee.id + ')">Eliminar</button>' +
+                        '</td>' +
+                        '</tr>'
+                    );
+                });
+            }
+        });
+    });
+
+    function editEmployee(id) {
+        // Implementar lógica para editar el empleado
+    }
+
+    function deleteEmployee(id) {
+        $.ajax({
+            url: '/employees/' + id + '/',
+            method: 'DELETE',
+            success: function(response) {
+                alert(response.message);
+                location.reload(); // Recargar la página para actualizar la lista
+            }
+        });
+    }
+</script>
+{% endblock %}
