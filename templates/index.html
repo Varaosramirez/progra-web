@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<h1>Bienvenido a Mi Aplicación</h1>
+<p>Esta es la página de inicio de tu aplicación.</p>
+
+<h2>Vehículos Disponibles</h2>
+<div class="row">
+    {% for vehicle in vehicles %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ vehicle.brand }} {{ vehicle.model }}</h5>
+                    <p class="card-text">{{ vehicle.description }}</p>
+                    <p class="card-text"><strong>Precio: ${{ vehicle.price }}</strong></p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'add_to_cart' vehicle.id %}" class="btn btn-primary">Añadir al Carrito</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión para Añadir</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
