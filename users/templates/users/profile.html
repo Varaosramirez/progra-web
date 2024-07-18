@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h1 class="my-4">Detalles del Usuario</h1>
+            <table class="table table-striped">
+                <tr>
+                    <th>Nombre de Usuario:</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre:</th>
+                    <td>{{ user.first_name }}</td>
+                </tr>
+                <tr>
+                    <th>Apellido:</th>
+                    <td>{{ user.last_name }}</td>
+                </tr>
+                <tr>
+                    <th>Teléfono:</th>
+                    <td>{{ user.phone }}</td>
+                </tr>
+            </table>
+
+            <h3>Historial de Compras</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Compra 1</li>
+                <li class="list-group-item">Compra 2</li>
+                <li class="list-group-item">Compra 3</li>
+            </ul>
+
+            <button id="editProfileBtn" class="btn btn-primary mt-4">Editar Perfil</button>
+            <form id="editProfileForm" method="POST" class="mt-4" style="display: none;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Nombre de Usuario:</label>
+                    {{ form.username|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo Electrónico:</label>
+                    {{ form.email|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="first_name">Nombre:</label>
+                    {{ form.first_name|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Apellido:</label>
+                    {{ form.last_name|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="phone">Teléfono:</label>
+                    {{ form.phone|add_class:"form-control" }}
+                </div>
+                <button type="submit" class="btn btn-success">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('editProfileBtn').addEventListener('click', function() {
+        var form = document.getElementById('editProfileForm');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

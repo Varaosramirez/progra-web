@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load extra_tags %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<h2>Registro</h2>
+<form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username">Nombre de Usuario</label>
+        {{ form.username|add_class:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        {{ form.email|add_class:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="password1">Contraseña</label>
+        {{ form.password1|add_class:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="password2">Confirmar Contraseña</label>
+        {{ form.password2|add_class:"form-control" }}
+    </div>
+    <div class="form-group">
+        <label for="is_admin">¿Es Administrador?</label>
+        {{ form.is_admin|add_class:"form-control" }}
+    </div>
+    <div class="form-group" id="security-code-field" style="display:none;">
+        <label for="security_code">Código de Seguridad</label>
+        {{ form.security_code|add_class:"form-control" }}
+    </div>
+    <button type="submit" class="btn btn-primary">Registrarse</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const isAdminCheckbox = document.getElementById('id_is_admin');
+        const securityCodeField = document.getElementById('security-code-field');
+
+        isAdminCheckbox.addEventListener('change', function () {
+            if (isAdminCheckbox.checked) {
+                securityCodeField.style.display = 'block';
+            } else {
+                securityCodeField.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}
