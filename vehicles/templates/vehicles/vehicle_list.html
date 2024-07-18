@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Vehículos Disponibles</h1>
+<div class="container">
+    <div class="row">
+        {% for vehicle in vehicles %}
+        <div class="col-md-4">
+            <div class="card vehicle-card">
+                <img src="{{ vehicle.image.url }}" class="card-img-top" alt="{{ vehicle.model }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ vehicle.model }}</h5>
+                    <p class="card-text">Marca: {{ vehicle.brand }}</p>
+                    <p class="card-text">Precio: {{ vehicle.price }}</p>
+                    <a href="{% url 'add_to_cart' vehicle.id %}" class="btn btn-primary">Agregar al Carrito</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

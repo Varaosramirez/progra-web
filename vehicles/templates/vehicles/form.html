@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Formulario de Vehículo{% endblock %}
+
+{% block content %}
+<h1>Formulario de Vehículo</h1>
+<form id="vehicle-form" onsubmit="return validateForm()">
+    <input type="hidden" id="vehicle-id" name="id">
+    <div class="form-group">
+        <label>Marca:</label>
+        <input type="text" class="form-control" id="brand" name="brand" required>
+    </div>
+    <div class="form-group">
+        <label>Modelo:</label>
+        <input type="text" class="form-control" id="model" name="model" required>
+    </div>
+    <div class="form-group">
+        <label>Precio:</label>
+        <input type="number" class="form-control" id="price" name="price" required>
+    </div>
+    <div class="form-group">
+        <label>Descripción:</label>
+        <textarea class="form-control" id="description" name="description" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+
+<script>
+    function validateForm() {
+        var brand = $('#brand').val();
+        var model = $('#model').val();
+        var price = $('#price').val();
+        var description = $('#description').val();
+
+        if (!brand || !model || !price || !description) {
+            alert('Todos los campos son obligatorios.');
+            return false;
+        }
+
+        submitForm();
+        return false; // Previene el envío del formulario normal
+    }
+
+    function submitForm() {
+        var id = $('#vehicle-id').val();
+        var method = id ? 'POST' : 'PUT';
+        var url = id ? '/vehicles/' + id + '/' : '/vehicles/create/';
+        $.ajax({
+            url: url,
+            method: method,
+            data: {
+                brand: $('#brand').val(),
+                model: $('#model').val(),
+                price: $('#price').val(),
+                description: $('#description').val()
+            },
+            success: function(response) {
+                alert(response.message);
+                window.location.href = '/vehicles/';
+            }
+        });
+    }
+
+    function loadVehicle(id) {
+        $.ajax({
+            url: '/vehicles/' + id + '/',
+            method: 'GET',
+            success: function(data) {
+                var vehicle = data.vehicle;
+                $('#vehicle-id').val(vehicle.id);
+                $('#brand').val(vehicle.brand);
+                $('#model').val(vehicle.model);
+                $('#price').val(vehicle.price);
+                $('#description').val(vehicle.description);
+            }
+        });
+    }
+</script>
+{% endblock %}
